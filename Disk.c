@@ -4,7 +4,7 @@
 
 long q[10000];
 int qi = 0;
-
+fpos_t position = 0;
 
 FILE *fp;
 FILE *f;
@@ -30,24 +30,25 @@ long deq(int pos){
 }
 
 void load_q(int time){
-    
+    printf("entered load\n");
     static int t = -1;
     static rec_un x;
     int loc;
     int proc;
 
-    //FIX ME: 
-    if(t>time){
-        time = t;
-    }
     while(t<=time){
         if(t>=0){
         inq(x.y);
         }
-
         fscanf(fp, "%d %d %d\n", &t, &loc, &proc);
-         x.x.loc = loc;
-         x.x.proc = proc;
+        x.x.loc = loc;
+        x.x.proc = proc;
+        fgetpos(fp, &position);
+    }        
+
+    if (t>time){
+        time = t;
+        fsetpos(fp, position-1);
     }  
 }
 
@@ -74,9 +75,13 @@ int largest(){
 }
 
 int process(int time){
-    int dir = 0;
+
+    printf("entered process\n");
+    
+    int static dir = 0;
 
     if (dir == 0){
+
         while(qi){
             rec_un y;
             y.y = deq(smallest());
@@ -103,7 +108,7 @@ int process(int time){
 int main() {
     int time = 0;
 
-    fp = fopen("s_request.txt", "r");
+    fp = fopen("s_requests.txt", "r");
     f = fopen("d_results.txt", "w");
 
 
@@ -116,6 +121,7 @@ int main() {
     fseek(fp, 0, 0);
 
     while(!feof(fp)){
+        printf("entered end of file checker\n");
         load_q(time);
         time = process(time);
     }
