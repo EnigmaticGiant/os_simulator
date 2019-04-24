@@ -4,7 +4,11 @@
 
 long q[10000];
 int qi = 0;
+<<<<<<< Updated upstream
 fpos_t position = 0;
+=======
+int count = 0;
+>>>>>>> Stashed changes
 
 FILE *fp;
 FILE *f;
@@ -48,7 +52,10 @@ void load_q(int time){
 
     if (t>time){
         time = t;
+<<<<<<< Updated upstream
         fsetpos(fp, position-1);
+=======
+>>>>>>> Stashed changes
     }  
 }
 
@@ -119,9 +126,13 @@ int main() {
 
     fscanf(fp, "%3i", &time);
     fseek(fp, 0, 0);
+<<<<<<< Updated upstream
 
     while(!feof(fp)){
         printf("entered end of file checker\n");
+=======
+    while(!feof(fp)){
+>>>>>>> Stashed changes
         load_q(time);
         time = process(time);
     }
