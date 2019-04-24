@@ -35,6 +35,12 @@ void load_q(int time){
     static rec_un x;
     int loc;
     int proc;
+    
+    if (t>time){
+        time = t;
+        //fseek(fp, count-1, 0);
+    }
+    
     while(t<=time){
         if(t>=0){
         	inq(x.y);
@@ -43,12 +49,15 @@ void load_q(int time){
         fscanf(fp, "%d %d %d\n", &t, &loc, &proc);
         x.x.loc = loc;
         x.x.proc = proc;
+        
+        //if (t > time) {
+            //inq(x.y);
+        //}
     }        
 
-    if (t>time){
-        time = t;
-        //fseek(fp, count-1, 0);
-    }  
+    
+    
+    return;
 }
 
 int smallest(){
@@ -91,13 +100,12 @@ int process(int time){
             rec_un y;
             y.y = deq(largest());
             time = time+5;
-            fprintf(f, "%d  %d\n", time, y.x.proc);
+            fprintf(f, "%d %d\n", time, y.x.proc);
         }
 
 
     }
     dir ^= 1;
-	printf("Qi:%i\n",qi);
     return time;
 }
 
