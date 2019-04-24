@@ -1,17 +1,51 @@
-#include "Scheduler.h"
+// #include "Scheduler.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "Process.h"
 
-//globals
 
-int qs[8][1 << 20];
-int ts[8] = {0,0,0,0,0,0,0,0};
-int x = 4096;
-int mem_alloc[4096];
-int mem_alloc_ptr = 0;
-int disk = 8192;
+#define totalProcess 100
 
-//funtion list
+
+
+Process* AllTheProcess[totalProcess];
+Process* PriorityQs[4][totalProcess];
+int tailIndex[4] = {0};
+
+void generateProcessess(void) {
+    for (int i = 0; i < totalProcess; i++) {
+        AllTheProcess[i] = createProcess();
+    }
+    return;
+}
+
+void putProcessintoPQ(void) {
+    for (int i = 0; i < totalProcess; i++) {
+        InstBlock * instB = getInstBlock(AllTheProcess[i]);
+        if (getPriority(instB) == 0) {
+            PriorityQs[0][tailIndex[0]++] = AllTheProcess[i];
+        }
+        else if (getPriority(instB) == 1) {
+            PriorityQs[1][tailIndex[1]++] = AllTheProcess[i];
+        }
+        else if (getPriority(instB) == 2) {
+            PriorityQs[2][tailIndex[2]++] = AllTheProcess[i];
+        }
+        else {
+            PriorityQs[3][tailIndex[3]++] = AllTheProcess[i];
+        }
+        }
+    
+    return;
+    }
+    
+
+
+
+
+
+
+
 
 
 int main() 
@@ -19,3 +53,13 @@ int main()
     
     return 0;
 }
+
+
+// //globals
+
+// int qs[8][1 << 20];
+// int ts[8] = {0,0,0,0,0,0,0,0};
+// int x = 4096;
+// int mem_alloc[4096];
+// int mem_alloc_ptr = 0;
+// int disk = 8192;
