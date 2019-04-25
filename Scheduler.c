@@ -7,10 +7,11 @@
 
 
 
-Process* AllTheProcess[totalProcess];
-Process* PriorityQs[4][totalProcess];
-Process* BlockQueue[totalProcess];
-int tailIndex[4] = {0};
+Process* AllTheProcess[totalProcess];           // Unsorted Process array
+Process* PriorityQs[4][totalProcess];           // Priority sorted array
+Process* BlockQueue[totalProcess];              
+Process* ReadyQueue[totalProcess];
+int tailIndex[6] = {0};                         // 1-4 Priority Queues, 5 Blocked, 6 Ready 
 
 void generateProcessess(void) {
     for (int i = 0; i < totalProcess; i++) {
@@ -38,60 +39,66 @@ void putProcessintoPQ(void) {
     
     return;
     }
-    
-/*
-void Process(void){
-int p[100];
-int a[100];
-int t[100];
-int i = 0;
-
-    while(1){
-        while(!feof) {
-            if(priority == -1 || address == -1 || ms == -1){
-                printf("-1 -1 -1\n");                             //printing -1 -1 -1 to tell everything else to stahp
-                exit(1);
-            }
-            p[i] = priority;
-            a[i] = address;
-            t[i] = ms;
-            i++;
-            scanf("%d %d %d", priority, address, ms);
-            while(1){
-                
-            }
-
-        }
-    }
+void enq()    
+{
 
 }
-*/
+void deq(Process * proc)
+{
+
+}
 void process_handler()
 {
-    while(1)          //Infinite Loop unless we are done, then we are going to stahp everything, so we are checking that these values are not -1, and if they are, we blow this popsicle stand and get some suckers.
+    int input[2] = {0,0,0};
+    int scheduler_time = 0;
+    while(input[0] != -1 || input[1] != -1 || input[2] != -1)          //Infinite Loop unless we are done, then we are going to stahp everything, so we are checking that these values are not -1, and if they are, we blow this popsicle stand and get some suckers.
     {
-        while(priority != -9 || address != -9 || ms != -9)                         // FIFO LOOP
+        while(input[0] != -9 || input[1] != -9 || input[2] != -9)                         // FIFO LOOP
         {
-            // CHECK IF THE FIRST THING READ IS (-1,-1,-1) BREAK LOOP;
-            if(priority == -1 || address == -1 || ms == -1){
-                printf("-1 -1 -1\n");
+            // CHECK IF THE FIRST THING READ IS (-1,-1,-1) 
+            if(input[0] == -1 || input[1] == -1 || input[2] == -1){
                 return;
             }
             // BLOCK QUEUE CHECK   
-            // READY QUEUE CHECK
-        }
-        if(/*The ERROR CODE -1 */)
-        {
-            for(int i=0; i<3; i++)      //Priority based for loop
+            for(int i = 0; i<BlockQueue[tailIndex[5]]; i++)
             {
-                //PROCESS TILL YOU BLOCK IT
+                if(/* input[3] == Process's Id */)
+                {
+                    // UPDATE BLOCKQUEUE TIME
+                    // ENQ INTO READY
+                    // DEQ FROM BLOCK
+                }
+            }
+            // READY QUEUE CHECK
+            for(int i = 0; i<ReadyQueue[tailIndex[6]]; i++)
+            {
+                if(/* Process's time_requested <= scheduler_time */)
+                {
+                    // GET THE PROCESS'S PRIORITY
+                    // ENQ INTO REPECTED PRIORITY
+                    // DEQ FROM READY
+                }
             }
         }
-            // CHECK IF EVERYTHING HAS BEEN PROCESSED
-                // IF SO SEND (-1,-1,-1) TO DISK
-            // PRINT FIFO CODE FOR SWITCH DISK TO SWITCH FROM READING TO WRITING
-                // Close FIFO
-            // OPEN FIFO FOR READING
+        //Priority based for loop
+        for(int i=0; i<3; i++) 
+        {
+                //PROCESS TILL YOU BLOCK IT
+        }
+        // CHECK IF EVERYTHING HAS BEEN PROCESSED
+        if(PriorityQs[0][0] == NULL && PriorityQs[1][0] == NULL && PriorityQs[2][0] == NULL && PriorityQs[3][0] == NULL && BlockQueue[0] == NULL && ReadyQueue[0] == NULL)
+        {
+                // SEND TO DISK THE END OF COMMUNITICATION CODE
+                printf("-1 -1 -1\n");
+                // I would end communtations here however, the FIFO is in write mode. So, I am going to the break cases end communication. 
+        }      
+        
+        // PRINT FIFO CODE FOR SWITCH DISK TO SWITCH FROM READING TO WRITING
+        // print("-9 -9 -9\n");
+        // Close FIFO 
+        // OPEN FIFO FOR READING
+
+        // RANDOMLY UPDATE SCHEDULER TIME (1-10 depends on the group)
     }
     
 }
