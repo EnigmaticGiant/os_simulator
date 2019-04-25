@@ -68,11 +68,15 @@ int i = 0;
 */
 void process_handler()
 {
-    while(/*CHECK FOR END CODE OF PROCESSING (-1,-1,-1) */)                             //Infinite loop
+    while(1)          //Infinite Loop unless we are done, then we are going to stahp everything, so we are checking that these values are not -1, and if they are, we blow this popsicle stand and get some suckers.
     {
-        while(/* CHECK FOR SWITCH CODE OF READING AND WRITING (-9,-9,-9) */)                         // FIFO LOOP
+        while(priority != -9 || address != -9 || ms != -9)                         // FIFO LOOP
         {
             // CHECK IF THE FIRST THING READ IS (-1,-1,-1) BREAK LOOP;
+            if(priority != -1 || address != -1 || ms != -1){
+                printf("-1 -1 -1\n");
+                exit(1);
+            }
             // BLOCK QUEUE CHECK
                 
             // READY QUEUE CHECK

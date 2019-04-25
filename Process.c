@@ -16,7 +16,7 @@
 	int LRU[256];
 	int D_Loc[256];			// Disk Location
 	int M_Loc[256];			// Memory Location
-	int P_remain;				// Pages Remaining (DEFAULT: 100)
+	int P_remain;			// Pages Remaining (DEFAULT: 100)
 };
 
 struct Process{
