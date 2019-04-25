@@ -9,6 +9,7 @@
 	int ms;					// CPU Time. How much time this process is allowed 
 	int address;			// Address /Index
 	int priority;			// Priority of the process range: 0-3
+	int time_requested;		// This is used to show when a process is blocked
 };
 
  struct PageTable {
@@ -33,6 +34,14 @@ PageTable *getPageTable(Process *proc){
 	return proc->P_Table;
 }
 
+int getTimeRequested(InstBlock *pt)
+{
+	return pt->time_requested;
+}
+void setTimeRequested(InstBlock * pt, int num)
+{
+	pt->time_requested = num;
+}
 int getRW(InstBlock *pt){
 	return pt->r_w;
 }
