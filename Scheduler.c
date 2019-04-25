@@ -73,26 +73,27 @@ void process_handler()
         while(priority != -9 || address != -9 || ms != -9)                         // FIFO LOOP
         {
             // CHECK IF THE FIRST THING READ IS (-1,-1,-1) BREAK LOOP;
-            if(priority != -1 || address != -1 || ms != -1){
+            if(priority == -1 || address == -1 || ms == -1){
                 printf("-1 -1 -1\n");
-                exit(1);
+                return;
             }
-            // BLOCK QUEUE CHECK
-                
+            // BLOCK QUEUE CHECK   
             // READY QUEUE CHECK
+        }
+        if(/*The ERROR CODE -1 */)
+        {
             for(int i=0; i<3; i++)      //Priority based for loop
             {
                 //PROCESS TILL YOU BLOCK IT
             }
-            // PRINT FIFO CODE FOR SWITCH DISK TO SWITCH FROM READING TO WRITING
-            // Close FIFO
-
+        }
             // CHECK IF EVERYTHING HAS BEEN PROCESSED
                 // IF SO SEND (-1,-1,-1) TO DISK
+            // PRINT FIFO CODE FOR SWITCH DISK TO SWITCH FROM READING TO WRITING
+                // Close FIFO
             // OPEN FIFO FOR READING
-        }
-        // CHECK THE LAST THING READ FOR END CODE
     }
+    
 }
 
 
