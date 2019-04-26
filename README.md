@@ -21,6 +21,6 @@ This file simulates a disk. It receives disk requests from the Scheduler and pro
 ### FIFO
 Process communication between the Scheduler and Disk is handled using FIFO.
 
-##This is the current idea
+## Notes from study sessions
 ![board2](https://user-images.githubusercontent.com/43188896/56602206-8f13a180-65c2-11e9-9a1f-00fd3b4378c9.jpg)
 ![board1](https://user-images.githubusercontent.com/43188896/56602216-920e9200-65c2-11e9-820e-53b9aa5cc54d.jpg)
