@@ -29,8 +29,8 @@ In Terminal 1:
 ```gcc newDisk.c -o disk```
 
 In Terminal 2:
-```gcc Scheduler.c -o sched```
-```./sched```
+```gcc Scheduler.c utils.c utils.h Process.c```
+```./a.out```
 
 In Terminal 1:
 ```./disk````
