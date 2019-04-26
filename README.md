@@ -21,6 +21,21 @@ This file simulates a disk. It receives disk requests from the Scheduler and pro
 ### FIFO
 Process communication between the Scheduler and Disk is handled using FIFO.
 
+
+## Testing
+In two separate terminals, run the following commands (in the given order):
+
+In Terminal 1:
+```gcc newDisk.c -o disk```
+
+In Terminal 2:
+```gcc Scheduler.c -o sched```
+```./sched```
+
+In Terminal 1:
+```./disk````
+
+
 ## Notes from study sessions
 ![board2](https://user-images.githubusercontent.com/43188896/56602206-8f13a180-65c2-11e9-9a1f-00fd3b4378c9.jpg)
 ![board1](https://user-images.githubusercontent.com/43188896/56602216-920e9200-65c2-11e9-820e-53b9aa5cc54d.jpg)
