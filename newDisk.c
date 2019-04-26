@@ -1,5 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h> 
+#include <sys/stat.h> 
+#include <sys/types.h> 
+#include <unistd.h>
+#include <time.h> 
 
 int qi = 0;
 int count = 0;
@@ -15,53 +20,65 @@ typedef struct {
     int ID;
 }request;
 
-request q[10000];
-request tempBlock;
+request* q[10000];
+request* tempBlock;
+
+request* createRequest(int *diskRequest)
+{
+    request *newRequest = malloc(sizeof(request));
+    newRequest->time = diskRequest[0];
+    newRequest->location = diskRequest[1];
+    newRequest->ID = diskRequest[2];
+
+    return newRequest;
+}
 
 
-void enq(request block) {
+void enq(request* block) {
         q[qi++] = block;
 }
 
-request deq(int pos) {
-        request temp = q[pos];
+request* deq(int pos) {
+        request* temp = q[pos];
         q[pos] = q[--qi];
         return temp;
 }
 
-void load_q(int time) {
+// void load_q(int time) {
 
-    request block;
-    block.time = -1;
-    //static rec_un x;
-    //int loc;
-    //int proc;
+//     request block;
+//     block.time = -1;
+//     //static rec_un x;
+//     //int loc;
+//     //int proc;
 
-    if (block.time>time){
-        time = block.time;
-        //fseek(s_requests, count-1, 0);
-    } 
+//     if (block.time>time){
+//         time = block.time;
+//         //fseek(s_requests, count-1, 0);
+//     } 
 
-    while(block.time <= time){
+//     while(block.time <= time){
 
-        if(block.time>=0){
-            //printf("after process: time = %d, location = %d, ID = %d\n", block.time, block.location, block.ID);
-        	enq(block);
-        }
-		//for each line, wee have 3 numbers in the following format:
-        // time location ID
-        fscanf(s_requests, "%d %d %d\n", &block.time, &block.location, &block.ID);  
-        //printf("time = %d, location = %d, ID = %d\n", block.time, block.location, block.ID);
-        tempBlock.time = block.time;
-        tempBlock.location = block.location;
-        tempBlock.ID = block.ID;
+//         if(block.time>=0){
+//             //printf("after process: time = %d, location = %d, ID = %d\n", block.time, block.location, block.ID);
+//         	enq(block);
+//         }
+// 		//for each line, wee have 3 numbers in the following format:
+//         // time location ID
+//         fscanf(s_requests, "%d %d %d\n", &block.time, &block.location, &block.ID);  
+//         //printf("time = %d, location = %d, ID = %d\n", block.time, block.location, block.ID);
+//         tempBlock.time = block.time;
+//         tempBlock.location = block.location;
+//         tempBlock.ID = block.ID;
     
-    }
+//     }
 
-    return;        
+//     return;        
 
      
-}
+// }
+
+
 //this function helps simulate a disk actuator for each process call, you alternate between tha smallest and biggest function
 int smallest() {
     int sp = 0;
@@ -91,51 +108,75 @@ int process(int time) {
     if (dir == 0){
 
         while(qi){
-            request newBlock;
+            request* newBlock;
             newBlock = deq(smallest());
             time = time+5;
-            fprintf(d_results, "%d %d\n", time, newBlock.ID);
+            // fprintf(d_results, "%d %d\n", time, newBlock->ID);
         }
     }
     else{
         while(qi){
-            request newBlock;
+            request *newBlock;
             newBlock = deq(largest());
             time = time+5;
-            fprintf(d_results, "%d %d\n", time, newBlock.ID);
+            // fprintf(d_results, "%d %d\n", time, newBlock->ID);
         }
 
 
     }
     dir ^= 1;
-    enq(tempBlock);
+    //enq(tempBlock);
     return time;
 }
 
+void waitFor (unsigned int secs) {
+    unsigned int retTime = time(0) + secs;   // Get finishing time.
+    while (time(0) < retTime);               // Loop until it arrives.
+}
 
 int main() {
-    int time = 0;
+    // open fifo pipe ----------------------------------------------
+    int fd1;
+    char* myfifo = "/tmp/myfifo";
 
-    s_requests = fopen("s_requests.txt", "r");
-    d_results = fopen("d_results.txt", "w");
-
-
-    if(s_requests == NULL){
-        printf("Error: file could not open\n");
-        exit(1);
-    }
-
-    fscanf(s_requests, "%3i", &time);
+    // declaring variables -----------------------------------------
     
-    fseek(s_requests, 0, 0);
-	//printf("time is %d\n", time);
-    while(!feof(s_requests)){
-        load_q(time);
-        time = process(time);
-    }
-    fclose(s_requests);
-    fclose(d_results);
+    int diskRequest[3], requestFulfilled[3];
+    // int endRequest[3] = {"0", "0", "0"};
+    int diskTime = 0;
 
+    
+    // ACTUAL OPERATION OF DISK ------------------------------------
+
+    while(1)
+    {
+        fd1 = open(myfifo,O_RDONLY);
+        read(fd1,diskRequest,12);
+        diskTime = diskRequest[0];
+        while(diskRequest[0] != -9)
+        {            
+            read(fd1,diskRequest,12);
+            request *newRequest = createRequest(diskRequest);
+            enq(newRequest);
+        }
+        diskTime = process(diskTime);
+        close(fd1);
+
+        fd1 = open(myfifo,O_WRONLY);
+        while(/*things to return in q*/)
+        {
+            request* returnRequest = deq(/*don't know what this pos is*/);
+            requestFulfilled[0] = returnRequest->time;
+            requestFulfilled[1] = returnRequest->location;
+            requestFulfilled[2] = returnRequest->ID;
+            write(fd1,requestFulfilled,12);
+        }
+        close(fd1);
+        waitFor(2);
+
+
+    }
+    return 0;
 }
 
 

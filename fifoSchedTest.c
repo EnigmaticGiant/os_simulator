@@ -36,7 +36,7 @@ int main()
 //   fflush(stdout);
     // char arr1[80], arr2[80]; 
     int move[3], newMove[3];
-    move[0] = 0, move[1] = 13, move[2] = 191;
+    // move[0] = 0, move[1] = 13, move[2] = 191;
     // printf("here");
     // fflush(stdout);
     while (1) 
@@ -52,6 +52,9 @@ int main()
   
         // Write the input arr2ing on FIFO 
         // and close it 
+
+        fgets(move, 12, stdin);
+        
         write(fd, move, 12); 
         close(fd); 
   
@@ -62,10 +65,7 @@ int main()
         read(fd, newMove, 12); 
   
         // Print the read message 
-        printf("time: %i, loc: %i, id: %i\n", move[0], move[1], move[2]);
-        move[0] = move[0] + random_between(5, 20);
-        move[1] = rand();
-        move[2] = random_between(0, 100); 
+        printf("time: %i, loc: %i, id: %i\n", newMove[0], newMove[1], newMove[2]); 
         close(fd);
         waitFor(2);
     } 
